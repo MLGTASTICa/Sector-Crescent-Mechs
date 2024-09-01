@@ -632,7 +632,7 @@ namespace Content.Client.Preferences.UI
                         loadout = loadout?.Clone();
                         var selector = new JobPrioritySelector(loadout, job, jobLoadoutGroup, _prototypeManager)
                         {
-                            Margin = new Thickness(3f, 3f, 3f, 0f),
+                            Margin = new Thickness(15f, 3f, 3f, 0f),
                         };
 
                         if (!_requirements.IsAllowed(job, out var reason))
