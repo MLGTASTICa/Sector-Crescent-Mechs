@@ -343,6 +343,7 @@ namespace Content.Client.Preferences.UI
 
             _jobPriorities = new List<JobPrioritySelector>();
             _jobCategories = new Dictionary<string, BoxContainer>();
+            _factionDepartaments = new Dictionary<string, BoxContainer>();
             _requirements = IoCManager.Resolve<JobRequirementsManager>();
             // TODO: Move this to the LobbyUIController instead of being spaghetti everywhere.
             _requirements.Updated += UpdateAntagRequirements;
@@ -522,6 +523,7 @@ namespace Content.Client.Preferences.UI
             _jobList.DisposeAllChildren();
             _jobPriorities.Clear();
             _jobCategories.Clear();
+            _factionDepartaments.Clear();
             var firstCategory = true;
 
             var factions = _prototypeManager.EnumeratePrototypes<FactionPrototype>().ToArray();
@@ -531,10 +533,6 @@ namespace Content.Client.Preferences.UI
                 if (!faction.Enabled)
                     continue;
 
-                var departments = faction.Departaments.Select(departamentID => _prototypeManager.Index<DepartmentPrototype>(departamentID))
-                    .ToArray();
-                Array.Sort(departments, DepartmentUIComparer.Instance);
-
                 if(!_factionDepartaments.TryGetValue(faction.ID, out var factionBlock))
                 {
                     var factionName = Loc.GetString($"faction-{faction.ID}");
@@ -542,10 +540,31 @@ namespace Content.Client.Preferences.UI
                     {
                         Orientation = LayoutOrientation.Vertical,
                         Name = faction.ID,
-                        ToolTip = Loc.GetString("humanoid-profile-editor-departaments-amount-in-faction-tooltip",
-                                ("factionName", Loc.GetString($"faction-{faction.ID}")))
+                        ToolTip = Loc.GetString("humanoid-profile-editor-department-amount-in-faction-tooltip",
+                                ("factionName", factionName))
                     };
+
+                    factionBlock.AddChild(new PanelContainer
+                    {
+                        PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#469999") },
+                        Children =
+                            {
+                                new Label
+                                {
+                                    Text = Loc.GetString("humanoid-profile-editor-faction-label",
+                                        ("factionName", factionName)),
+                                    Margin = new Thickness(10f, 0, 0, 0)
+                                }
+                            }
+                    });
+
+                    _factionDepartaments[faction.ID] = factionBlock;
+                    _jobList.AddChild(factionBlock);
                 }
+
+                var departments = faction.Departments.Select(departamentID => _prototypeManager.Index<DepartmentPrototype>(departamentID))
+                  .ToArray();
+                Array.Sort(departments, DepartmentUIComparer.Instance);
 
                 foreach (var department in departments)
                 {
@@ -582,6 +601,7 @@ namespace Content.Client.Preferences.UI
                         category.AddChild(new PanelContainer
                         {
                             PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#464966") },
+                            Margin = new Thickness(10f, 0, 0, 0),
                             Children =
                             {
                                 new Label
@@ -594,7 +614,7 @@ namespace Content.Client.Preferences.UI
                         });
 
                         _jobCategories[department.ID] = category;
-                        _jobList.AddChild(category);
+                        factionBlock.AddChild(category);
                     }
 
                     var jobs = department.Roles.Select(jobId => _prototypeManager.Index<JobPrototype>(jobId))

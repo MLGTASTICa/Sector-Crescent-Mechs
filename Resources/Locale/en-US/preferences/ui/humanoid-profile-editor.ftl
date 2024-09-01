@@ -37,7 +37,9 @@ humanoid-profile-editor-preference-spawn-priority-arrivals = Arrivals
 humanoid-profile-editor-preference-spawn-priority-cryosleep = Cryosleep
 
 humanoid-profile-editor-jobs-amount-in-department-tooltip = Jobs in the {$departmentName} department
+humanoid-profile-editor-department-amount-in-faction-tooltip = Departaments in the {$factionName} faction
 humanoid-profile-editor-department-jobs-label = {$departmentName}
+humanoid-profile-editor-faction-label = {$factionName}
 humanoid-profile-editor-antags-tab = Antags
 humanoid-profile-editor-antag-preference-yes-button = Yes
 humanoid-profile-editor-antag-preference-no-button = No

@@ -1,0 +1,8 @@
+- type: faction
+  id: firstFaction
+  description: department-Civilian-description
+  color: "#9FED58"
+  weight: -10
+  departments:
+  - Civilian
+  enabled: true
