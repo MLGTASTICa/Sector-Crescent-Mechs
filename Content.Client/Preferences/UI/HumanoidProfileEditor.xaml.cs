@@ -522,6 +522,14 @@ namespace Content.Client.Preferences.UI
             _jobCategories.Clear();
             var firstCategory = true;
 
+            var factions = _prototypeManager.EnumeratePrototypes<FactionPrototype>().ToArray();
+            foreach (var faction in factions)
+            {
+
+            }
+
+
+
             var departments = _prototypeManager.EnumeratePrototypes<DepartmentPrototype>().ToArray();
             Array.Sort(departments, DepartmentUIComparer.Instance);
 
