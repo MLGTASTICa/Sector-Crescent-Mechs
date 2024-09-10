@@ -128,7 +128,7 @@ namespace Content.Shared.Preferences
                 DefaultBalance,
                 new HumanoidCharacterAppearance(),
 
-                SpawnPriorityPreference.None,new Dictionary<string, JobPriority>
+                SpawnPriorityPreference.None, new Dictionary<string, JobPriority>
                 {
                     {SharedGameTicker.FallbackOverflowJob, JobPriority.High}
                 },
@@ -231,6 +231,9 @@ namespace Content.Shared.Preferences
         [DataField("bankBalance")]
         public int BankBalance { get; private set; }
 
+        [DataField("faction")]
+        public string? Faction { get; private set; }
+
         public ICharacterAppearance CharacterAppearance => Appearance;
 
         [DataField("appearance")]
@@ -249,6 +252,10 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile WithFlavorText(string flavorText)
         {
             return new(this) { FlavorText = flavorText };
+        }
+        public HumanoidCharacterProfile WithFaction(string factionId)
+        {
+            return new(this) { Faction = factionId };
         }
 
         public HumanoidCharacterProfile WithAge(int age)
