@@ -13,6 +13,9 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Preferences\UI\FactionSelectorGuI - Copy.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Nett" />
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
   </ItemGroup>
@@ -28,4 +31,16 @@
   </ItemGroup>
   <Import Project="..\RobustToolbox\MSBuild\Robust.Properties.targets" />
   <Import Project="..\RobustToolbox\MSBuild\XamlIL.targets" />
+  <ItemGroup>
+    <AdditionalFiles Remove="Preferences\UI\FactionSelectorGuI - Copy.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Preferences\UI\FactionSelectorGuI - Copy.xaml" />
+    <EmbeddedResource Remove="Preferences\UI\FactionSelectorGuI.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Update="Preferences\UI\FactionSelectorGuI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AdditionalFiles>
+  </ItemGroup>
 </Project>
