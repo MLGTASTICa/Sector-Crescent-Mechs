@@ -51,6 +51,7 @@ namespace Content.Shared.Preferences
             Sex sex,
             Gender gender,
             int bankBalance,
+            string? faction,
             HumanoidCharacterAppearance appearance,
             SpawnPriorityPreference spawnPriority,
             Dictionary<string, JobPriority> jobPriorities,
@@ -66,6 +67,7 @@ namespace Content.Shared.Preferences
             Sex = sex;
             Gender = gender;
             BankBalance = bankBalance;
+            Faction = faction;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
             _jobPriorities = jobPriorities;
@@ -82,7 +84,7 @@ namespace Content.Shared.Preferences
             List<string> antagPreferences,
             List<string> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts)
-            : this(other.Name, other.FlavorText, other.Species, other.Age, other.Sex, other.Gender, other.BankBalance, other.Appearance, other.SpawnPriority,
+            : this(other.Name, other.FlavorText, other.Species, other.Age, other.Sex, other.Gender, other.BankBalance, other.Faction, other.Appearance, other.SpawnPriority,
                 jobPriorities, other.PreferenceUnavailable, antagPreferences, traitPreferences, loadouts)
         {
         }
@@ -101,6 +103,7 @@ namespace Content.Shared.Preferences
             Sex sex,
             Gender gender,
             int bankBalance,
+            string? faction,
             HumanoidCharacterAppearance appearance,
             SpawnPriorityPreference spawnPriority,
             IReadOnlyDictionary<string, JobPriority> jobPriorities,
@@ -108,7 +111,7 @@ namespace Content.Shared.Preferences
             IReadOnlyList<string> antagPreferences,
             IReadOnlyList<string> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts)
-            : this(name, flavortext, species, age, sex, gender, bankBalance, appearance, spawnPriority, new Dictionary<string, JobPriority>(jobPriorities),
+            : this(name, flavortext, species, age, sex, gender, bankBalance, faction, appearance, spawnPriority, new Dictionary<string, JobPriority>(jobPriorities),
                 preferenceUnavailable, new List<string>(antagPreferences), new List<string>(traitPreferences), new Dictionary<string, RoleLoadout>(loadouts))
         {
         }
@@ -126,6 +129,7 @@ namespace Content.Shared.Preferences
                 Sex.Male,
                 Gender.Male,
                 DefaultBalance,
+                "",
                 new HumanoidCharacterAppearance(),
 
                 SpawnPriorityPreference.None, new Dictionary<string, JobPriority>
@@ -154,6 +158,7 @@ namespace Content.Shared.Preferences
                 Sex.Male,
                 Gender.Male,
                 DefaultBalance,
+                "",
                 HumanoidCharacterAppearance.DefaultWithSpecies(species),
                 SpawnPriorityPreference.None,
                 new Dictionary<string, JobPriority>
@@ -208,7 +213,7 @@ namespace Content.Shared.Preferences
 
             var name = GetName(species, gender);
 
-            return new HumanoidCharacterProfile(name, "", species, age, sex, gender, balance, HumanoidCharacterAppearance.Random(species, sex), SpawnPriorityPreference.None,
+            return new HumanoidCharacterProfile(name, "", species, age, sex, gender, balance, "", HumanoidCharacterAppearance.Random(species, sex), SpawnPriorityPreference.None,
                 new Dictionary<string, JobPriority>
                 {
                     {SharedGameTicker.FallbackOverflowJob, JobPriority.High},
@@ -378,6 +383,7 @@ namespace Content.Shared.Preferences
             if (Gender != other.Gender) return false;
             if (Species != other.Species) return false;
             if (BankBalance != other.BankBalance) return false;
+            if (Faction != other.Faction) return false;
             if (PreferenceUnavailable != other.PreferenceUnavailable) return false;
             if (SpawnPriority != other.SpawnPriority) return false;
             if (!_jobPriorities.SequenceEqual(other._jobPriorities)) return false;

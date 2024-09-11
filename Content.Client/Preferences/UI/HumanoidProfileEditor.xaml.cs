@@ -58,7 +58,6 @@ namespace Content.Client.Preferences.UI
 
         private BoxContainer CharacterSetupContainer => CCharacterSetup;
 
-        private BoxContainer FactionSetupContainer => CFactionSetup;
         private TabContainer _tabContainer => CTabContainer;
         private BoxContainer _jobList => CJobList;
         private BoxContainer _antagList => CAntagList;

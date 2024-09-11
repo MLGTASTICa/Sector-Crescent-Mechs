@@ -69,7 +69,7 @@ namespace Content.Client.Preferences.UI
                 args.Event.Handle();
             };
 
-            _factionSelector = new FactionSelectorGuI(preferencesManager);
+            _factionSelector = new FactionSelectorGuI(preferencesManager, prototypeManager);
             _humanoidProfileEditor = new HumanoidProfileEditor(preferencesManager, prototypeManager, configurationManager);
             _humanoidProfileEditor.OnProfileChanged += ProfileChanged;
             // MARCAT
@@ -136,7 +136,7 @@ namespace Content.Client.Preferences.UI
                 characterPickerButton.OnPressed += args =>
                 {
                     HumanoidCharacterProfile profile = (HumanoidCharacterProfile) character;
-                    if (profile.Faction is not null)
+                    if (profile.Faction is null)
                     {
                         CharEditor.AddChild(_humanoidProfileEditor);
                         _humanoidProfileEditor.Profile = profile;

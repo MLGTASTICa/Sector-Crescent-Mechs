@@ -37,17 +37,24 @@ namespace Content.Client.Preferences.UI
     public sealed partial class FactionSelectorGuI : BoxContainer
     {
         private readonly IClientPreferencesManager _preferencesManager;
+        private readonly IPrototypeManager _prototypeManager;
         public HumanoidCharacterProfile? Profile;
         public event Action<HumanoidCharacterProfile, int>? OnProfileChanged;
+
+        private BoxContainer _factionList => CFactionList;
+
+        private Dictionary<Button, string> internalDirectory;
 
         private bool _isDirty;
         public int CharacterSlot;
 
 
-        public FactionSelectorGuI(IClientPreferencesManager preferencesManager)
+        public FactionSelectorGuI(IClientPreferencesManager preferencesManager, IPrototypeManager prototypeManager)
         {
             RobustXamlLoader.Load(this);
             _preferencesManager = preferencesManager;
+            _prototypeManager = prototypeManager;
+            internalDirectory = new Dictionary<Button, string>();
         }
 
         private void SetDirty()
@@ -83,6 +90,19 @@ namespace Content.Client.Preferences.UI
             Profile = (HumanoidCharacterProfile) _preferencesManager.Preferences!.SelectedCharacter;
             CharacterSlot = _preferencesManager.Preferences.SelectedCharacterIndex;
 
+        }
+
+        public void UpdateUI()
+        {
+            var factions = _prototypeManager.EnumeratePrototypes<FactionPrototype>().ToArray();
+            Array.Sort(factions, FactionUIComparer.Instance);
+            foreach (var faction in factions)
+            {
+                if (!faction.Enabled)
+                    continue;
+
+                var factionName = Loc.GetString($"faction-{faction.ID}");
+            }
         }
 
         public void Save()
