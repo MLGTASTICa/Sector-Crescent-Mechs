@@ -34,7 +34,7 @@ using Direction = Robust.Shared.Maths.Direction;
 namespace Content.Client.Preferences.UI
 {
     [GenerateTypedNameReferences]
-    public sealed partial class FactionSelectorGuI : BoxContainer
+    public sealed partial class FactionSelectorGui : BoxContainer
     {
         private readonly IClientPreferencesManager _preferencesManager;
         private readonly IPrototypeManager _prototypeManager;
@@ -49,7 +49,7 @@ namespace Content.Client.Preferences.UI
         public int CharacterSlot;
 
 
-        public FactionSelectorGuI(IClientPreferencesManager preferencesManager, IPrototypeManager prototypeManager)
+        public FactionSelectorGui(IClientPreferencesManager preferencesManager, IPrototypeManager prototypeManager)
         {
             RobustXamlLoader.Load(this);
             _preferencesManager = preferencesManager;

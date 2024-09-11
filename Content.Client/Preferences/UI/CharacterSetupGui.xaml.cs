@@ -34,7 +34,7 @@ namespace Content.Client.Preferences.UI
         private readonly IPrototypeManager _prototypeManager;
         private readonly Button _createNewCharacterButton;
         private readonly HumanoidProfileEditor _humanoidProfileEditor;
-        private readonly FactionSelectorGuI _factionSelector;
+        private readonly FactionSelectorGui _factionSelector;
 
         public CharacterSetupGui(
             IEntityManager entityManager,
@@ -69,7 +69,7 @@ namespace Content.Client.Preferences.UI
                 args.Event.Handle();
             };
 
-            _factionSelector = new FactionSelectorGuI(preferencesManager, prototypeManager);
+            _factionSelector = new FactionSelectorGui(preferencesManager, prototypeManager);
             _humanoidProfileEditor = new HumanoidProfileEditor(preferencesManager, prototypeManager, configurationManager);
             _humanoidProfileEditor.OnProfileChanged += ProfileChanged;
             // MARCAT
