@@ -102,6 +102,12 @@ namespace Content.Client.Preferences.UI
                     continue;
 
                 var factionName = Loc.GetString($"faction-{faction.ID}");
+                var FactionButton = new Button();
+                FactionButton.Text = faction.ID;
+                FactionButton.OnPressed += _ =>
+                {
+                    setFaction(faction);
+                };
             }
         }
 
