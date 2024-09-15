@@ -56,8 +56,6 @@ namespace Content.Client.Preferences.UI
         private SingleMarkingPicker _facialHairPicker => CFacialHairPicker;
         private EyeColorPicker _eyesPicker => CEyeColorPicker;
 
-        private BoxContainer CharacterSetupContainer => CCharacterSetup;
-
         private TabContainer _tabContainer => CTabContainer;
         private BoxContainer _jobList => CJobList;
         private BoxContainer _antagList => CAntagList;

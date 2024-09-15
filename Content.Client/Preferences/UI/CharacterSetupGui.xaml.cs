@@ -72,6 +72,7 @@ namespace Content.Client.Preferences.UI
             _factionSelector = new FactionSelectorGui(preferencesManager, prototypeManager);
             _humanoidProfileEditor = new HumanoidProfileEditor(preferencesManager, prototypeManager, configurationManager);
             _humanoidProfileEditor.OnProfileChanged += ProfileChanged;
+            CharEditor.AddChild(_humanoidProfileEditor);
             // MARCAT
 
             UpdateUI();
@@ -111,7 +112,6 @@ namespace Content.Client.Preferences.UI
             var numberOfFullSlots = 0;
             var characterButtonsGroup = new ButtonGroup();
             Characters.RemoveAllChildren();
-            CharEditor.RemoveAllChildren();
 
             if (!_preferencesManager.ServerDataLoaded)
             {
@@ -135,21 +135,11 @@ namespace Content.Client.Preferences.UI
                 var characterIndexCopy = slot;
                 characterPickerButton.OnPressed += args =>
                 {
-                    HumanoidCharacterProfile profile = (HumanoidCharacterProfile) character;
-                    if (profile.Faction is null)
-                    {
-                        CharEditor.AddChild(_humanoidProfileEditor);
-                        _humanoidProfileEditor.Profile = profile;
-                        _humanoidProfileEditor.CharacterSlot = characterIndexCopy;
-                        _humanoidProfileEditor.UpdateControls();
-                        _preferencesManager.SelectCharacter(character);
-                    }
-                    else
-                    {
-                        CharEditor.AddChild(_factionSelector);
-                        _factionSelector.Profile = profile;
-                        _factionSelector.CharacterSlot = characterIndexCopy;
-                    }
+                    _humanoidProfileEditor.Profile = (HumanoidCharacterProfile) character;
+                    _humanoidProfileEditor.CharacterSlot = characterIndexCopy;
+                    _humanoidProfileEditor.UpdateControls();
+                    _preferencesManager.SelectCharacter(character);
+
                     var controller = UserInterfaceManager.GetUIController<LobbyUIController>();
                     controller.UpdateProfile(_humanoidProfileEditor.Profile);
                     controller.ReloadCharacterUI();

@@ -108,6 +108,7 @@ namespace Content.Client.Preferences.UI
                 {
                     setFaction(faction);
                 };
+                _factionList.AddChild(FactionButton);
             }
         }
 
