@@ -1,10 +1,8 @@
 <BoxContainer xmlns="https://spacestation14.io"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-         VerticalExpand="True">
-    <Control>
-        <ScrollContainer VerticalExpand="True">
-            <BoxContainer Name="CFactionList" Orientation="Vertical" />
-        </ScrollContainer>
+         HorizontalExpand="True">
+    <BoxContainer>
+        <BoxContainer Name="CFactionList" Orientation="Vertical" />
         <BoxContainer Name="FactionInfo" Orientation="Vertical" />
-    </Control>
+    </BoxContainer>
 </BoxContainer>

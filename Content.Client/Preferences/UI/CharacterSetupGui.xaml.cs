@@ -72,7 +72,7 @@ namespace Content.Client.Preferences.UI
             _factionSelector = new FactionSelectorGui(preferencesManager, prototypeManager);
             _humanoidProfileEditor = new HumanoidProfileEditor(preferencesManager, prototypeManager, configurationManager);
             _humanoidProfileEditor.OnProfileChanged += ProfileChanged;
-            CharEditor.AddChild(_humanoidProfileEditor);
+            _factionSelector.OnProfileChanged += ProfileChanged;
             // MARCAT
 
             UpdateUI();
@@ -92,17 +92,23 @@ namespace Content.Client.Preferences.UI
             _preferencesManager.OnServerDataLoaded -= UpdateUI;
         }
 
-        public void Save() => _humanoidProfileEditor.Save();
+        public void Save()
+        { 
+            _humanoidProfileEditor.Save();
+            _factionSelector.Save();
+        }
 
         private void ProfileChanged(ICharacterProfile profile, int profileSlot)
         {
             _humanoidProfileEditor.UpdateControls();
+            _factionSelector.UpdateUI();
             UpdateUI();
         }
 
         public void UpdateControls()
         {
             // Reset sliders etc. upon going going back to GUI.
+            _factionSelector.LoadServerData();
             _humanoidProfileEditor.LoadServerData();
         }
 
@@ -135,14 +141,28 @@ namespace Content.Client.Preferences.UI
                 var characterIndexCopy = slot;
                 characterPickerButton.OnPressed += args =>
                 {
-                    _humanoidProfileEditor.Profile = (HumanoidCharacterProfile) character;
-                    _humanoidProfileEditor.CharacterSlot = characterIndexCopy;
-                    _humanoidProfileEditor.UpdateControls();
                     _preferencesManager.SelectCharacter(character);
-
+                    HumanoidCharacterProfile realProfile = (HumanoidCharacterProfile) character;
                     var controller = UserInterfaceManager.GetUIController<LobbyUIController>();
-                    controller.UpdateProfile(_humanoidProfileEditor.Profile);
-                    controller.ReloadCharacterUI();
+                    CharEditor.RemoveAllChildren();
+                    _humanoidProfileEditor.Profile = realProfile;
+                    _humanoidProfileEditor.CharacterSlot = characterIndexCopy;
+                    _factionSelector.Profile = realProfile;
+                    _factionSelector.CharacterSlot = characterIndexCopy;
+                    if (realProfile.Faction!.Length > 0)
+                    {
+                        CharEditor.AddChild(_humanoidProfileEditor);
+                        _humanoidProfileEditor.UpdateControls();
+                        controller.UpdateProfile(_humanoidProfileEditor.Profile);
+                        controller.ReloadCharacterUI();
+                    }
+                    else
+                    {
+                        CharEditor.AddChild(_factionSelector);
+                        _factionSelector.UpdateUI();
+                        controller.UpdateProfile(_factionSelector.Profile);
+                    }
+
                     UpdateUI();
                     args.Event.Handle();
 

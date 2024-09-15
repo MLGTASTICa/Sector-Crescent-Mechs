@@ -592,7 +592,8 @@ namespace Content.Shared.Preferences
                     Age,
                     Sex,
                     Gender,
-                    Appearance
+                    Appearance,
+                    Faction
                 ),
                 BankBalance,
                 SpawnPriority,

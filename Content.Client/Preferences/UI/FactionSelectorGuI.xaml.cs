@@ -55,6 +55,18 @@ namespace Content.Client.Preferences.UI
             _preferencesManager = preferencesManager;
             _prototypeManager = prototypeManager;
             internalDirectory = new Dictionary<Button, string>();
+
+            var controller = UserInterfaceManager.GetUIController<LobbyUIController>();
+
+            if (preferencesManager.ServerDataLoaded)
+            {
+                LoadServerData();
+            }
+
+
+            preferencesManager.OnServerDataLoaded += LoadServerData;
+            IsDirty = false;
+            controller.UpdateProfile();
         }
 
         private void SetDirty()
@@ -65,11 +77,9 @@ namespace Content.Client.Preferences.UI
             IsDirty = true;
         }
 
-        private void setFaction(FactionPrototype faction)
+        private void SetFaction(FactionPrototype faction)
         {
             if (Profile is null)
-                return;
-            if (Profile.Faction is not null)
                 return;
 
             Profile = Profile.WithFaction(faction.ID);
@@ -89,26 +99,31 @@ namespace Content.Client.Preferences.UI
         {
             Profile = (HumanoidCharacterProfile) _preferencesManager.Preferences!.SelectedCharacter;
             CharacterSlot = _preferencesManager.Preferences.SelectedCharacterIndex;
-
         }
 
         public void UpdateUI()
         {
+            _factionList.RemoveAllChildren();
             var factions = _prototypeManager.EnumeratePrototypes<FactionPrototype>().ToArray();
-            Array.Sort(factions, FactionUIComparer.Instance);
             foreach (var faction in factions)
             {
                 if (!faction.Enabled)
                     continue;
 
                 var factionName = Loc.GetString($"faction-{faction.ID}");
-                var FactionButton = new Button();
-                FactionButton.Text = faction.ID;
-                FactionButton.OnPressed += _ =>
+                var factionButton = new Button();
+                if (faction.ID == Profile!.Faction)
+                    factionButton.Text = "SELECTED";
+                else
+                    factionButton.Text = faction.ID;
+                factionButton.OnPressed += _ =>
                 {
-                    setFaction(faction);
+                    SetFaction(faction);
+                    Save();
+                    UpdateUI();
                 };
-                _factionList.AddChild(FactionButton);
+                _factionList.AddChild(factionButton);
+
             }
         }
 
