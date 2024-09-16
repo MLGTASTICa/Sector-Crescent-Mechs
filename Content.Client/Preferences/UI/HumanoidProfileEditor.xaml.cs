@@ -537,6 +537,8 @@ namespace Content.Client.Preferences.UI
             {
                 if (!faction.Enabled)
                     continue;
+                if (faction.ID != Profile?.Faction)
+                    continue;
 
                 if(!_factionDepartaments.TryGetValue(faction.ID, out var factionBlock))
                 {

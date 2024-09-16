@@ -40,6 +40,7 @@ namespace Content.Client.Preferences.UI
         private readonly IPrototypeManager _prototypeManager;
         public HumanoidCharacterProfile? Profile;
         public event Action<HumanoidCharacterProfile, int>? OnProfileChanged;
+        public CharacterSetupGui SetupUI;
 
         private BoxContainer _factionList => CFactionList;
 
@@ -49,11 +50,12 @@ namespace Content.Client.Preferences.UI
         public int CharacterSlot;
 
 
-        public FactionSelectorGui(IClientPreferencesManager preferencesManager, IPrototypeManager prototypeManager)
+        public FactionSelectorGui(IClientPreferencesManager preferencesManager, IPrototypeManager prototypeManager, CharacterSetupGui setupUI)
         {
             RobustXamlLoader.Load(this);
             _preferencesManager = preferencesManager;
             _prototypeManager = prototypeManager;
+            SetupUI = setupUI;
             internalDirectory = new Dictionary<Button, string>();
 
             var controller = UserInterfaceManager.GetUIController<LobbyUIController>();
@@ -120,7 +122,7 @@ namespace Content.Client.Preferences.UI
                 {
                     SetFaction(faction);
                     Save();
-                    UpdateUI();
+                    SetupUI.SwitchToCharacterEditor();
                 };
                 _factionList.AddChild(factionButton);
 

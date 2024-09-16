@@ -69,7 +69,7 @@ namespace Content.Client.Preferences.UI
                 args.Event.Handle();
             };
 
-            _factionSelector = new FactionSelectorGui(preferencesManager, prototypeManager);
+            _factionSelector = new FactionSelectorGui(preferencesManager, prototypeManager, this);
             _humanoidProfileEditor = new HumanoidProfileEditor(preferencesManager, prototypeManager, configurationManager);
             _humanoidProfileEditor.OnProfileChanged += ProfileChanged;
             _factionSelector.OnProfileChanged += ProfileChanged;
@@ -112,6 +112,17 @@ namespace Content.Client.Preferences.UI
             _humanoidProfileEditor.LoadServerData();
         }
 
+        public void SwitchToCharacterEditor()
+        {
+            CharEditor.RemoveAllChildren();
+            CharEditor.AddChild(_humanoidProfileEditor);
+            _humanoidProfileEditor.Profile = _factionSelector.Profile;
+            var controller = UserInterfaceManager.GetUIController<LobbyUIController>();
+            _humanoidProfileEditor.UpdateControls();
+            CharEditor.AddChild(_humanoidProfileEditor);
+            controller.ReloadCharacterUI();
+        }
+
         private void UpdateUI()
         {
 
@@ -137,7 +148,6 @@ namespace Content.Client.Preferences.UI
                     characterButtonsGroup,
                     character);
                 Characters.AddChild(characterPickerButton);
-
                 var characterIndexCopy = slot;
                 characterPickerButton.OnPressed += args =>
                 {
